@@ -1,0 +1,57 @@
+<div class="" id="for"> 
+	<center><h1>Recent Job Listings</h1></center>
+
+</div>
+
+ <% if @jobs.blank? %>
+        <p style="font-size:75px; text-align:center; margin-top:150px" >There are no Job Postings Yet</p>
+        <center><a href="/jobs/new" class="btn btn-primary">Post New Job</a></center>
+<% end %>
+
+
+
+
+
+
+
+<%  a = @jobs.order("created_at DESC") %>
+<% a.each do |p| %>
+
+
+
+<div class="col-md-4 col-sm-4">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<strong>Company Name:</strong>  <%= p.company_name %>
+		</div>
+
+		<div class="panel-body">
+			<%= image_tag(p.company_logo, :width => 90, :height => 80) %>
+			<div class="container">
+				<%= truncate(p.job_description, :length => 100, :separator => ' ') %>
+			</div>
+		</div>
+
+		<div class="panel-footer">
+			<div class="row">
+				<div class="col-md-8">
+					
+					<% if logged_in? %>
+					<%= link_to 'Edit Post', edit_job_path(p) %>|
+					<%=  link_to 'Delete', job_path(p), method: :delete, data: { confirm: 'Are you sure?' } %>|
+					<%= link_to 'Show Post', job_path(p) %>
+					<% else %>
+					<%= link_to 'Show Post', job_path(p) %>
+					<% end %>
+
+				</div>
+				<div class="col-md-4">
+					<div class="btn btn-primary"><%= link_to 'Apply', new_apply_path(p) %></a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<% end %>	
